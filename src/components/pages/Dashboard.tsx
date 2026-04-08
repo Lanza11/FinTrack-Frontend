@@ -104,7 +104,7 @@ export const Dashboard = () => {
           
           {/* Main content body below */}
           <div className="bg-white border-dashed border-2 border-gray-200 p-12 rounded-xl text-center">
-             <p className="text-gray-500 font-medium">Contenido Central de Transacciones (Proximamente Fase 4)</p>
+             <p className="text-gray-500 font-medium">Contenido Central de Transacciones (En desarrollo)</p>
           </div>
         </div>
       </main>
