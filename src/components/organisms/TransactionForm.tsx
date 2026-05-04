@@ -20,8 +20,8 @@ const CATEGORIAS_EGRESO = [
 
 // Esquema de validacion de una fila de egreso
 const egresoItemSchema = z.object({
-  monto: z.number({ invalid_type_error: 'Requerido' }).min(1, 'Min $1'),
-  categoria: z.number({ invalid_type_error: 'Requerido' }),
+  monto: z.number().min(1, 'Monto requerido'),
+  categoria: z.number(),
   descripcion: z.string().min(3, 'Min 3 chars').max(100),
 });
 

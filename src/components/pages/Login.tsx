@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../store/AuthContext';
 import { authService } from '../../services/authService';
 import { toast } from 'sonner';
-import { Wallet, ArrowRight, Lock, Mail, Eye, EyeOff, HelpCircle } from 'lucide-react';
+import { Wallet, ArrowRight, Lock, Mail, Eye, EyeOff } from 'lucide-react';
 import { Button } from '../atoms/Button';
 import { Input } from '../atoms/Input';
 import { Label } from '../atoms/Label';

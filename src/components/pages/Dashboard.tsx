@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../store/AuthContext';
 import { transaccionService } from '../../services/transaccionService';
 import type { MovimientoDTO } from '../../services/transaccionService';
-import { Wallet, ArrowUpRight, ArrowDownLeft, Menu, Bell, LayoutDashboard, ReceiptText, PieChart, BarChart3, TrendingUp, TrendingDown, LogOut, Clock, ExternalLink } from 'lucide-react';
+import { Wallet, ArrowUpRight, ArrowDownLeft, Menu, LayoutDashboard, ReceiptText, PieChart, BarChart3, TrendingUp, TrendingDown, LogOut, Clock, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 

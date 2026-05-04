@@ -166,7 +166,9 @@ export const TransactionTable = ({ refreshKey = 0 }: { refreshKey?: number }) =>
                       safeDateLabel = dateObj.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
                     }
                   }
-                } catch (e) { /* ignorar */ }
+                } catch (e) { 
+                  console.warn('Error al formatear la fecha de la transacción', tr.fecha, e);
+                 }
 
                 return (
                   <tr key={rowKey} className="hover:bg-slate-50/50 transition-colors group">
