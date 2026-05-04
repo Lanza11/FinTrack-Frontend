@@ -1,19 +1,47 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #2563eb;
-  --color-primary-dark: #1d4ed8;
-  --color-primary-light: #dbeafe;
-  --color-income: #10b981;
-  --color-income-light: #dcfce7;
-  --color-expense: #ef4444;
-  --color-expense-light: #fee2e2;
-  --color-warning: #f59e0b;
-  --color-warning-light: #fef3c7;
+  /* Paleta de colores */
+  --color-brand-primary: #3b82f6;
+  --color-brand-secondary: #6366f1;
+  --color-brand-accent: #10b981;
+  
+  --color-surface-base: #f8fafc;
+  --color-surface-card: #ffffff;
+  
+  --shadow-premium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 }
 
 @layer base {
+  /* Configuracion base para tipografia y suavizado de fuentes */
   body {
-    @apply bg-gray-50 text-gray-800 font-sans;
+    @apply bg-slate-50 text-slate-900 antialiased selection:bg-blue-100;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+}
+
+@layer components {
+  /* Estilos para componentes tipo tarjeta con efecto de elevacion */
+  .card-premium {
+    @apply bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300;
+  }
+
+  .glass-effect {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-glass;
+  }
+  
+  /* Gradientes para botones y estados */
+  .gradient-brand {
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 text-white;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
 }

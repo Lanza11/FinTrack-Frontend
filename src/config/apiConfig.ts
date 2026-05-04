@@ -1,20 +1,22 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+// Configuracion de URLs base extraidas de variables de entorno para facilitar el despliegue
+const API_AUTH_BASE = import.meta.env.VITE_API_AUTH_URL || 'http://localhost:8081/api';
+const API_MAIN_BASE = import.meta.env.VITE_API_MAIN_URL || 'http://localhost:8080/api';
 
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: `${API_BASE_URL}/auth/login`,
-    REGISTER: `${API_BASE_URL}/auth/register`,
+    LOGIN: `${API_AUTH_BASE}/auth/login`,
+    REGISTER: `${API_AUTH_BASE}/auth/register`,
   },
   TRANSACTIONS: {
-    INGRESO: `${API_BASE_URL}/transacciones/SaveIngreso`,
-    EGRESO: `${API_BASE_URL}/transacciones/egreso`,
+    INGRESO: `${API_MAIN_BASE}/transacciones/SaveIngreso`,
+    EGRESO: `${API_MAIN_BASE}/transacciones/egreso`,
   },
   CONSULTAS: {
-    HISTORIAL: `${API_BASE_URL}/consultas/historial`,
-    ULTIMOS: `${API_BASE_URL}/consultas/ultimos`,
-    POR_CATEGORIA: `${API_BASE_URL}/consultas/por-categoria`,
+    HISTORIAL: `${API_MAIN_BASE}/consultas/historial`,
+    ULTIMOS: `${API_MAIN_BASE}/consultas/ultimos`,
+    POR_CATEGORIA: `${API_MAIN_BASE}/consultas/por-categoria`,
   },
-  BUDGETS: `${API_BASE_URL}/budgets`,
-  REPORTS: `${API_BASE_URL}/reports`,
-  BALANCE: `${API_BASE_URL}/balance`,
+  BUDGETS: `${API_MAIN_BASE}/budgets`,
+  REPORTS: `${API_MAIN_BASE}/reports`,
+  BALANCE: `${API_MAIN_BASE}/consultas/balance`,
 };
