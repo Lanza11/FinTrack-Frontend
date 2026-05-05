@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 
 type User = {
   id: string | number;
@@ -20,16 +20,26 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Inicialización perezosa para evitar renders en cascada y cumplir con reglas estrictas de Lint
   const [user, setUser] = useState<User | null>(() => {
-    const stored = localStorage.getItem('fintrack_user');
-    if (stored && stored !== "undefined") {
-      try { return JSON.parse(stored); } catch { return null; }
+    const u = localStorage.getItem('fintrack_user');
+    const t = localStorage.getItem('fintrack_token');
+    if (u && t && u !== "undefined" && t !== "undefined") {
+      try { return JSON.parse(u); } catch { return null; }
     }
     return null;
   });
 
   const [token, setToken] = useState<string | null>(() => {
-    const stored = localStorage.getItem('fintrack_token');
-    return (stored && stored !== "undefined") ? stored : null;
+    const u = localStorage.getItem('fintrack_user');
+    const t = localStorage.getItem('fintrack_token');
+    if (u && t && u !== "undefined" && t !== "undefined") {
+      return t;
+    }
+    // Limpieza preventiva si los datos están incompletos
+    if (u || t) {
+      localStorage.removeItem('fintrack_user');
+      localStorage.removeItem('fintrack_token');
+    }
+    return null;
   });
 
   // Limpia el estado y el almacenamiento local al cerrar sesion
@@ -47,13 +57,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('fintrack_user', JSON.stringify(userData));
     localStorage.setItem('fintrack_token', tokenData);
   }, []);
-
-  // Efecto solo para asegurar la consistencia si los datos en LS cambian o son inválidos
-  useEffect(() => {
-    if ((user && !token) || (!user && token)) {
-      logout();
-    }
-  }, [user, token, logout]);
 
   return (
     <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, login, logout }}>
