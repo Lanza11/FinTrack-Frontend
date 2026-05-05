@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 type User = {
   id: string | number;
@@ -18,44 +18,42 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Proveedor de autenticacion que gestiona el estado global del usuario y el token JWT
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  // Inicialización perezosa para evitar renders en cascada y cumplir con reglas estrictas de Lint
+  const [user, setUser] = useState<User | null>(() => {
+    const stored = localStorage.getItem('fintrack_user');
+    if (stored && stored !== "undefined") {
+      try { return JSON.parse(stored); } catch { return null; }
+    }
+    return null;
+  });
+
+  const [token, setToken] = useState<string | null>(() => {
+    const stored = localStorage.getItem('fintrack_token');
+    return (stored && stored !== "undefined") ? stored : null;
+  });
 
   // Limpia el estado y el almacenamiento local al cerrar sesion
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('fintrack_user');
     localStorage.removeItem('fintrack_token');
-  };
+  }, []);
 
-  // Recupera la sesion persistida al cargar la aplicacion
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('fintrack_user');
-      const storedToken = localStorage.getItem('fintrack_token');
-      
-      // Verificacion robusta para evitar "pantalla blanca" por datos corruptos
-      if (storedUser && storedToken && storedUser !== "undefined" && storedToken !== "undefined") {
-        setUser(JSON.parse(storedUser));
-        setToken(storedToken);
-      } else if (storedUser || storedToken) {
-        // Si hay datos parciales o corruptos, limpiamos para evitar bugs
-        logout();
-      }
-    } catch (e) {
-      console.error("Error cargando sesion persistida:", e);
-      logout(); // Limpiar en caso de error de parseo
-    }
-  }, [logout]);
-  
   // Almacena datos de usuario y token en estado y almacenamiento local
-  const login = (userData: User, tokenData: string) => {
+  const login = useCallback((userData: User, tokenData: string) => {
     setUser(userData);
     setToken(tokenData);
     localStorage.setItem('fintrack_user', JSON.stringify(userData));
     localStorage.setItem('fintrack_token', tokenData);
-  };
+  }, []);
+
+  // Efecto solo para asegurar la consistencia si los datos en LS cambian o son inválidos
+  useEffect(() => {
+    if ((user && !token) || (!user && token)) {
+      logout();
+    }
+  }, [user, token, logout]);
 
   return (
     <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, login, logout }}>
