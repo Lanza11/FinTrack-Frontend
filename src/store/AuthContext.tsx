@@ -21,6 +21,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
+  // Limpia el estado y el almacenamiento local al cerrar sesion
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem('fintrack_user');
+    localStorage.removeItem('fintrack_token');
+  };
+
   // Recupera la sesion persistida al cargar la aplicacion
   useEffect(() => {
     try {
@@ -39,22 +47,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error("Error cargando sesion persistida:", e);
       logout(); // Limpiar en caso de error de parseo
     }
-  }, []);
-
+  }, [logout]);
+  
   // Almacena datos de usuario y token en estado y almacenamiento local
   const login = (userData: User, tokenData: string) => {
     setUser(userData);
     setToken(tokenData);
     localStorage.setItem('fintrack_user', JSON.stringify(userData));
     localStorage.setItem('fintrack_token', tokenData);
-  };
-
-  // Limpia el estado y el almacenamiento local al cerrar sesion
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('fintrack_user');
-    localStorage.removeItem('fintrack_token');
   };
 
   return (
@@ -64,6 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 
-interface LabelProps extends ComponentProps<'label'> {}
+type LabelProps = ComponentProps<'label'>;
 
 export const Label = ({ children, className = '', ...props }: LabelProps) => {
   return (

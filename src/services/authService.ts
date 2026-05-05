@@ -40,7 +40,7 @@ export const authService = {
   },
 
   // Registra un nuevo usuario en el sistema
-  register: async (data: RegisterData): Promise<any> => {
+  register: async (data: RegisterData): Promise<unknown> => {
     const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
